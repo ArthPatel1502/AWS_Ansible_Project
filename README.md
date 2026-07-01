@@ -28,7 +28,7 @@ This project demonstrates how Ansible automates infrastructure management on AWS
 AWS_Ansible_Project/
 │── ansible.cfg
 │── inventory
-│── playbook.yml
+│── first.yml
 │── README.md
 ```
 
@@ -53,17 +53,43 @@ git clone https://github.com/ArthPatel1502/AWS_Ansible_Project.git
 cd AWS_Ansible_Project
 ```
 
-Run the playbook:
-
-```bash
-ansible-playbook -i inventory playbook.yml
-```
-
 Verify connectivity:
 
 ```bash
-ansible all -m ping
+ansible all -i inventory -m ping
 ```
+
+Run the playbook:
+
+```bash
+ansible-playbook -i inventory first.yml
+```
+
+---
+
+## 📜 Playbook (`first.yml`)
+
+```yaml
+---
+- name: Install Nginx and start nginx
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install nginx
+      shell: apt-get install -y nginx
+
+    - name: Start nginx
+      shell: systemctl start nginx
+```
+
+### What this playbook does
+
+- Connects to all hosts defined in the inventory.
+- Executes tasks with sudo privileges (`become: true`).
+- Installs **Nginx** on each managed EC2 instance.
+- Starts the Nginx service automatically.
+- Demonstrates centralized server management using a single Ansible Control Node.
 
 ---
 
@@ -90,6 +116,7 @@ ansible all -m ping
 - Configure an Ansible Control Node to securely access remote EC2 instances.
 - Manage multiple servers from a single machine using an inventory file.
 - Write reusable Ansible playbooks to automate server configuration.
+- Deploy software simultaneously across multiple EC2 instances.
 - Execute repeatable and idempotent automation tasks.
 - Understand how Ansible simplifies infrastructure management at scale.
 
